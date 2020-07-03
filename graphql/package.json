@@ -1,0 +1,32 @@
+{
+  "name": "battle-graphql",
+  "license": "MIT",
+  "version": "0.1.0",
+  "dependencies": {
+    "nexus": "0.25.0",
+    "nexus-plugin-prisma": "^0.16.1"
+  },
+  "scripts": {
+    "format": "prettier --write './**/*.{ts,md}'",
+    "dev": "nexus dev",
+    "build": "nexus build",
+    "start": "node .nexus/build/api",
+    "db:start": "docker-compose up -d",
+    "db:stop": "docker-compose down --volumes",
+    "db:seed": "ts-node prisma/seed.ts",
+    "prisma:justdoit": "yarn prisma:migrate && yarn prisma:generate",
+    "prisma:migrate": "yarn prisma migrate save --experimental && yarn prisma migrate up --experimental",
+    "prisma:generate": "yarn prisma generate",
+    "prisma:introspect": "yarn prisma introspect",
+    "prisma:studio": "yarn prisma studio --experimental"
+  },
+  "devDependencies": {
+    "prettier": "^2.0.5",
+    "ts-node": "^8.10.2"
+  },
+  "prettier": {
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "all"
+  }
+}

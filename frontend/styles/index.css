@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+
+.or {
+  @apply bg-havelock-blue;
+  background: linear-gradient(
+    108deg,
+    rgba(76, 152, 213, 1) 0%,
+    rgba(76, 152, 213, 1) 49%,
+    rgba(83, 170, 104, 1) 50%,
+    rgba(83, 170, 104, 1) 100%
+  );
+}
+
+p {
+  @apply my-4 font-normal text-white text-opacity-75 break-words;
+}
+
+p:first-child {
+  @apply mt-0;
+}
+
+.btn-blue {
+  @apply bg-blue-500 text-white font-bold py-2 px-4 rounded;
+}
+
+.hero {
+  @apply py-20;
+}
+
+.title {
+  @apply text-5xl text-center;
+  color: #333;
+  line-height: 1.15;
+}
+
+@tailwind utilities;
+
+/* :root {
+  --sans-font: "Ubuntu", Helvetica, Verdana, sans-serif;
+  --serif-font: "Merriweather", Georgia, Times, serif; */

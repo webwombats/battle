@@ -1,0 +1,19 @@
+generator prisma_client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = "***"
+}
+
+model Battle {
+  description String
+  id          Int    @default(autoincrement()) @id
+}
+
+model World {
+  id         Int    @default(autoincrement()) @id
+  name       String @unique
+  population Float
+}
