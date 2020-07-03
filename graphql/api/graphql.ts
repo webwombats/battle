@@ -1,4 +1,8 @@
 import { schema } from 'nexus';
+import { compare, hash } from 'bcryptjs';
+import { sign } from 'jsonwebtoken';
+
+export const APP_SECRET = 'appsecret321';
 
 schema.objectType({
   name: 'User',
@@ -12,11 +16,10 @@ schema.objectType({
 });
 
 schema.objectType({
-  name: 'World',
+  name: 'AuthPayload',
   definition(t) {
-    t.model.id();
-    t.model.name();
-    t.model.population();
+    t.string('token');
+    t.field('user', { type: 'User' });
   },
 });
 
@@ -25,37 +28,12 @@ schema.objectType({
   definition(t) {
     t.model.id();
     t.model.description();
+    t.model.userId();
   },
 });
 
 schema.queryType({
   definition(t) {
-    t.field('hello', {
-      type: 'World',
-      args: {
-        world: schema.stringArg({ required: false }),
-      },
-      async resolve(_root, args, ctx) {
-        const worldToFindByName = args.world ?? 'Earth';
-        const world = await ctx.db.world.findOne({
-          where: {
-            name: worldToFindByName,
-          },
-        });
-
-        if (!world) throw new Error(`No such world named "${args.world}"`);
-
-        return world;
-      },
-    });
-
-    t.list.field('worlds', {
-      type: 'World',
-      resolve(_root, _args, ctx) {
-        return ctx.db.world.findMany();
-      },
-    });
-
     t.list.field('battles', {
       type: 'Battle',
       resolve(_root, _args, ctx) {
@@ -67,6 +45,69 @@ schema.queryType({
       type: 'User',
       resolve(_root, _args, ctx) {
         return ctx.db.user.findMany();
+      },
+    });
+  },
+});
+
+schema.mutationType({
+  definition(t) {
+    t.field('signup', {
+      type: 'AuthPayload',
+      args: {
+        fullName: schema.stringArg({ nullable: false }),
+        userName: schema.stringArg({ nullable: false }),
+        email: schema.stringArg({ nullable: false }),
+        password: schema.stringArg({ nullable: false }),
+      },
+      resolve: async (
+        _parent,
+        { fullName, userName, email, password },
+        ctx,
+      ) => {
+        const hashedPassword = await hash(password, 10);
+        const user = await ctx.db.user.create({
+          data: {
+            fullName,
+            userName,
+            email,
+            password: hashedPassword,
+          },
+        });
+
+        return {
+          token: sign({ userId: user.id }, APP_SECRET),
+          user,
+        };
+      },
+    });
+
+    t.field('login', {
+      type: 'AuthPayload',
+      args: {
+        email: schema.stringArg({ nullable: false }),
+        password: schema.stringArg({ nullable: false }),
+      },
+      resolve: async (_parent, { email, password }, ctx) => {
+        const user = await ctx.db.user.findOne({
+          where: {
+            email,
+          },
+        });
+
+        if (!user) {
+          throw new Error(`No user found for email: ${email}`);
+        }
+        const passwordValid = await compare(password, user.password);
+
+        if (!passwordValid) {
+          throw new Error('Invalid password');
+        }
+
+        return {
+          token: sign({ userId: user.id }, APP_SECRET),
+          user,
+        };
       },
     });
   },

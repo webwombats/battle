@@ -1,27 +1,40 @@
 import { PrismaClient } from '@prisma/client';
+import { hash } from 'bcryptjs';
+
+import { UserCreateInput } from '.prisma/client';
+
+export const APP_SECRET = 'appsecret321';
 
 const db = new PrismaClient();
 
 main();
 
 async function main() {
-  const worlds = [
-    {
-      name: 'Earth',
-      population: 6_000_000_000,
-    },
-    {
-      name: 'Mars',
-      population: 0,
-    },
-  ];
+  // const battles = [
+  //   {
+  //     description: 'Hello',
+  //   },
+  //   {
+  //     description: 'Hello 2',
+  //   },
+  // ];
 
-  const battles = [
+  const users: UserCreateInput[] = [
     {
-      description: 'Hello',
-    },
-    {
-      description: 'Hello 2',
+      userName: 'yuri',
+      email: 'hi@mynameisyuri.com',
+      password: 'test123',
+      fullName: 'Yuri Yakovlev',
+      battles: {
+        create: [
+          {
+            description: 'Hello there',
+          },
+          {
+            description: 'Hello there 2',
+          },
+        ],
+      },
     },
   ];
 
@@ -30,12 +43,21 @@ async function main() {
 
   let results = [];
 
-  for (const world of worlds) {
-    results.push(await db.world.create({ data: world }));
+  for (const user of users) {
+    const hashedPassword = await hash(user.password, 10);
+    const createdUser = await db.user.create({
+      data: {
+        ...user,
+        password: hashedPassword,
+      },
+    });
+
+    results.push(createdUser);
   }
-  for (const battle of battles) {
-    results.push(await db.battle.create({ data: battle }));
-  }
+
+  // for (const battle of battles) {
+  //   results.push(await db.battle.create({ data: battle }));
+  // }
 
   console.log('Seeded: %j', results);
 
