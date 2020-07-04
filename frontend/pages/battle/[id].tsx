@@ -1,8 +1,10 @@
 import { FC } from "react";
 
 import Header from "@components/Layout/Header";
+import ErrorMessage from "@components/ErrorMessage";
+
 import { initializeApollo } from "@lib/apolloClient";
-import { BattlesDocument, BattleDocument } from "@codegen";
+import { BattlesDocument, BattleDocument, useBattleQuery } from "@codegen";
 
 const BattleTitle = () => (
   <div className="container mx-auto grid grid-cols-battle-title my-12 border-gray-900 font-sans">
@@ -30,28 +32,25 @@ const BattleDescription: FC = ({ children }) => (
   </div>
 );
 
-const IndexPage = () => {
+const IndexPage = ({ id }) => {
+  const { loading, error, data, fetchMore, networkStatus } = useBattleQuery({
+    variables: { id },
+    // Setting this value to true will make the component rerender when
+    // the "networkStatus" changes, so we are able to know if it is fetching
+    // more data
+    notifyOnNetworkStatusChange: true,
+  });
+
+  if (error) return <ErrorMessage message="Error loading posts." />;
+  if (loading) return <div>Loading</div>;
+
   return (
     <div>
       <Header />
 
       <BattleTitle />
       <BattleDescription>
-        <p>
-          Старый предмет споров: кем быть, как себя позиционировать, как расти?
-          Можно ли себя называть фронтендером/бэкендером или настоящий
-          программист должен быть инженером, а специализация - особенность
-          проекта/задачи?
-        </p>
-        <p>
-          С одной стороны "фуллстек - вечный мидл, ничего толком не знает, за
-          двумя зайцами погонишься...", а "специализация в одной области - выбор
-          настоящего профессионала".
-        </p>
-        <p>
-          С другой - "нужно уметь делать проект от и до, хотя бы в плане
-          разработки, без работы не останешься, шире кругозор".
-        </p>
+        <div dangerouslySetInnerHTML={{ __html: data.battle.description }} />
       </BattleDescription>
     </div>
   );
@@ -82,6 +81,7 @@ export async function getStaticProps({ params }) {
 
   return {
     props: {
+      id: params.id,
       initialApolloState: apolloClient.cache.extract(),
     },
     unstable_revalidate: 1,

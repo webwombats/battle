@@ -43,9 +43,12 @@ const BattleList = () => {
       <ul>
         {data.battles.map((battle, index) => (
           <li key={battle.id} className="py-4">
-            <p>
-              <b>Battle description</b>: {battle.description}
-            </p>
+            <div>
+              <p>
+                <b>Battle description</b>:
+              </p>
+              <div dangerouslySetInnerHTML={{ __html: battle.description }} />
+            </div>
             <p>
               <b>UserId created this battle</b>: {battle.userId}
             </p>

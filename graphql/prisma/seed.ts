@@ -10,14 +10,9 @@ const db = new PrismaClient();
 main();
 
 async function main() {
-  // const battles = [
-  //   {
-  //     description: 'Hello',
-  //   },
-  //   {
-  //     description: 'Hello 2',
-  //   },
-  // ];
+  const battle = {
+    description: `<p>Nunc vitae odio sit amet ex consectetur luctus. Vivamus efficitur.</p><p>Leo nec pulvinar. Sed commodo enim non justo venenatis, eu eleifend.</p>`,
+  };
 
   const users: UserCreateInput[] = [
     {
@@ -26,38 +21,7 @@ async function main() {
       password: 'test123',
       fullName: 'Yuri Yakovlev',
       battles: {
-        create: [
-          {
-            description: 'Hello there',
-          },
-          {
-            description: 'Hello there 2',
-          },
-          {
-            description: 'Hello there 3',
-          },
-          {
-            description: 'Hello there 4',
-          },
-          {
-            description: 'Hello there 5',
-          },
-          {
-            description: 'Hello there 6',
-          },
-          {
-            description: 'Hello there 7',
-          },
-          {
-            description: 'Hello there 8',
-          },
-          {
-            description: 'Hello there 9',
-          },
-          {
-            description: 'Hello there 10',
-          },
-        ],
+        create: Array(10).fill(battle),
       },
     },
   ];
@@ -78,10 +42,6 @@ async function main() {
 
     results.push(createdUser);
   }
-
-  // for (const battle of battles) {
-  //   results.push(await db.battle.create({ data: battle }));
-  // }
 
   console.log('Seeded: %j', results);
 
