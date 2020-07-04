@@ -9,8 +9,8 @@ type AuthPayload {
 
 type Battle {
   description: String!
-  id: Int!
-  userId: Int
+  id: String!
+  userId: String
 }
 
 """
@@ -31,6 +31,7 @@ type Mutation {
 }
 
 type Query {
+  battle(id: ID!): Battle
   battles: [Battle!]
   users: [User!]
 }
@@ -39,6 +40,6 @@ type User {
   battles: [Battle!]!
   email: String!
   fullName: String!
-  id: Int!
+  id: String!
   userName: String!
 }

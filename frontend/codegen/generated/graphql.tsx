@@ -19,19 +19,25 @@ export type Scalars = {
 export type Query = {
   __typename?: 'Query';
   battles?: Maybe<Array<Battle>>;
+  battle?: Maybe<Battle>;
   users?: Maybe<Array<User>>;
+};
+
+
+export type QueryBattleArgs = {
+  id: Scalars['ID'];
 };
 
 export type Battle = {
   __typename?: 'Battle';
-  id: Scalars['Int'];
+  id: Scalars['String'];
   description: Scalars['String'];
-  userId?: Maybe<Scalars['Int']>;
+  userId?: Maybe<Scalars['String']>;
 };
 
 export type User = {
   __typename?: 'User';
-  id: Scalars['Int'];
+  id: Scalars['String'];
   userName: Scalars['String'];
   email: Scalars['String'];
   fullName: Scalars['String'];
@@ -102,6 +108,19 @@ export type BattlesQuery = (
     { __typename?: 'Battle' }
     & Pick<Battle, 'id' | 'description' | 'userId'>
   )>> }
+);
+
+export type BattleQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type BattleQuery = (
+  { __typename?: 'Query' }
+  & { battle?: Maybe<(
+    { __typename?: 'Battle' }
+    & Pick<Battle, 'id' | 'description' | 'userId'>
+  )> }
 );
 
 export const UserFragmentDoc = gql`
@@ -187,3 +206,38 @@ export function useBattlesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHook
 export type BattlesQueryHookResult = ReturnType<typeof useBattlesQuery>;
 export type BattlesLazyQueryHookResult = ReturnType<typeof useBattlesLazyQuery>;
 export type BattlesQueryResult = ApolloReactCommon.QueryResult<BattlesQuery, BattlesQueryVariables>;
+export const BattleDocument = gql`
+    query battle($id: ID!) {
+  battle(id: $id) {
+    id
+    description
+    userId
+  }
+}
+    `;
+
+/**
+ * __useBattleQuery__
+ *
+ * To run a query within a React component, call `useBattleQuery` and pass it any options that fit your needs.
+ * When your component renders, `useBattleQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useBattleQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useBattleQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<BattleQuery, BattleQueryVariables>) {
+        return ApolloReactHooks.useQuery<BattleQuery, BattleQueryVariables>(BattleDocument, baseOptions);
+      }
+export function useBattleLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<BattleQuery, BattleQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<BattleQuery, BattleQueryVariables>(BattleDocument, baseOptions);
+        }
+export type BattleQueryHookResult = ReturnType<typeof useBattleQuery>;
+export type BattleLazyQueryHookResult = ReturnType<typeof useBattleLazyQuery>;
+export type BattleQueryResult = ApolloReactCommon.QueryResult<BattleQuery, BattleQueryVariables>;

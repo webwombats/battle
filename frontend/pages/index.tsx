@@ -19,7 +19,6 @@ export async function getStaticProps() {
 
   await apolloClient.query({
     query: BattlesDocument,
-    // variables: allPostsQueryVars,
   });
 
   return {

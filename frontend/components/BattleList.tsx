@@ -13,7 +13,7 @@ const BattleList = () => {
     notifyOnNetworkStatusChange: true,
   });
 
-  const loadingMorePosts = networkStatus === NetworkStatus.fetchMore;
+  const loadingMoreBattles = networkStatus === NetworkStatus.fetchMore;
 
   // const loadMorePosts = () => {
   //   fetchMore({
@@ -33,7 +33,7 @@ const BattleList = () => {
   // };
 
   if (error) return <ErrorMessage message="Error loading posts." />;
-  if (loading && !loadingMorePosts) return <div>Loading</div>;
+  if (loading && !loadingMoreBattles) return <div>Loading</div>;
 
   // const { allPosts, _allPostsMeta } = data;
   // const areMorePosts = allPosts.length < _allPostsMeta.count;

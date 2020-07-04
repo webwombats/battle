@@ -36,14 +36,24 @@ schema.queryType({
   definition(t) {
     t.list.field('battles', {
       type: 'Battle',
-      resolve(_root, _args, ctx) {
+      resolve(_parent, _args, ctx) {
         return ctx.db.battle.findMany();
+      },
+    });
+
+    t.field('battle', {
+      type: 'Battle',
+      args: {
+        id: schema.idArg({ nullable: false }),
+      },
+      resolve: async (_parent, { id }, ctx) => {
+        return ctx.db.battle.findOne({ where: { id } });
       },
     });
 
     t.list.field('users', {
       type: 'User',
-      resolve(_root, _args, ctx) {
+      resolve(_parent, _args, ctx) {
         return ctx.db.user.findMany();
       },
     });

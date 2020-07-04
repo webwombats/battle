@@ -6,6 +6,14 @@ query battles {
   }
 }
 
+query battle($id: ID!) {
+  battle(id: $id) {
+    id
+    description
+    userId
+  }
+}
+
 # fragment TrainingChapter on TrainingcampchapterRecord {
 #   id
 #   title
