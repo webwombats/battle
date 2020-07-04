@@ -1,7 +1,14 @@
 import "../styles/index.css";
 
-function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />;
-}
+import { ApolloProvider } from "@apollo/react-hooks";
+import { useApollo } from "../lib/apolloClient";
 
-export default MyApp;
+export default function App({ Component, pageProps }) {
+  const apolloClient = useApollo(pageProps.initialApolloState);
+
+  return (
+    <ApolloProvider client={apolloClient}>
+      <Component {...pageProps} />
+    </ApolloProvider>
+  );
+}

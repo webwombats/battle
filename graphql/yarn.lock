@@ -3020,9 +3020,9 @@ unc-path-regex@^0.1.2:
   resolved "https://registry.yarnpkg.com/unc-path-regex/-/unc-path-regex-0.1.2.tgz#e73dd3d7b0d7c5ed86fbac6b0ae7d8c6a69d50fa"
   integrity sha1-5z3T17DXxe2G+6xrCufYxqadUPo=
 
-undici@mcollina/undici:
+"undici@github:mcollina/undici":
   version "1.0.3"
-  resolved "https://codeload.github.com/mcollina/undici/tar.gz/eecb3bbc76ffe7c52fd695ad3caba33371c8f13d"
+  resolved "https://codeload.github.com/mcollina/undici/tar.gz/503c1b9e124d81f3671a0eadca86202cdb6d974e"
 
 unique-string@^2.0.0:
   version "2.0.0"
