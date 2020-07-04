@@ -1,8 +1,8 @@
+import Link from "next/link";
 import { NetworkStatus } from "apollo-client";
 
+import { useBattlesQuery } from "@codegen";
 import ErrorMessage from "./ErrorMessage";
-import { useBattlesQuery } from "../codegen/generated/graphql";
-import Link from "next/link";
 
 const BattleList = () => {
   const { loading, error, data, fetchMore, networkStatus } = useBattlesQuery({
