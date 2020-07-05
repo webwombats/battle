@@ -46,10 +46,18 @@ To run the Prisma Studio
 
 ```graphql
 query battles {
-  battles {
+  battles(first: 15) {
     id
     description
     userId
+    arguments(first: 10) {
+      id
+      text
+      comments(first: 20) {
+        id
+        text
+      }
+    }
   }
 }
 ```
@@ -60,6 +68,14 @@ query battle($id: ID!) {
     id
     description
     userId
+    arguments(first: 10) {
+      id
+      text
+      comments(first: 20) {
+        id
+        text
+      }
+    }
   }
 }
 ```
@@ -124,6 +140,24 @@ mutation login($email: String!, $password: String!) {
         userId
       }
     }
+  }
+}
+```
+
+```graphql
+mutation addArgument($battleId: ID!, $text: String!) {
+  addArgument(battleId: $battleId, text: $text) {
+    id
+    text
+  }
+}
+```
+
+```graphql
+mutation addComment($argumentId: ID!, $text: String!) {
+  addComment(argumentId: $argumentId, text: $text) {
+    id
+    text
   }
 }
 ```
