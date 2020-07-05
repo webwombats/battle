@@ -59,6 +59,7 @@ type Mutation {
 type Query {
   battle(id: ID!): Battle
   battles(after: BattleWhereUniqueInput, before: BattleWhereUniqueInput, first: Int, last: Int): [Battle!]!
+  me: User
   users(after: UserWhereUniqueInput, before: UserWhereUniqueInput, first: Int, last: Int): [User!]!
 }
 

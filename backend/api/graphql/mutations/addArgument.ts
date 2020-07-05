@@ -1,5 +1,7 @@
 import { schema } from 'nexus';
-import { errorMessages } from '../messages';
+
+import { errorMessages } from '../../messages';
+import { getUserId } from '../../utils';
 
 schema.extendType({
   type: 'Mutation',
@@ -12,7 +14,7 @@ schema.extendType({
         text: schema.stringArg({ nullable: false }),
       },
       resolve: async (_parent, { battleId, text }, ctx) => {
-        const userId = 'ckc918o7m000201mqh0ambcxl';
+        const userId = getUserId(ctx.token);
 
         const isArgumentAlreadyExists = await ctx.db.argument.count({
           where: { battleId, userId },
