@@ -13,6 +13,10 @@ type Battle {
   userId: String
 }
 
+input BattleWhereUniqueInput {
+  id: String
+}
+
 """
 A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the
 `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO
@@ -32,14 +36,20 @@ type Mutation {
 
 type Query {
   battle(id: ID!): Battle
-  battles: [Battle!]
-  users: [User!]
+  battles(after: BattleWhereUniqueInput, before: BattleWhereUniqueInput, first: Int, last: Int): [Battle!]!
+  users(after: UserWhereUniqueInput, before: UserWhereUniqueInput, first: Int, last: Int): [User!]!
 }
 
 type User {
-  battles: [Battle!]!
+  battles(after: BattleWhereUniqueInput, before: BattleWhereUniqueInput, first: Int, last: Int): [Battle!]!
   email: String!
   fullName: String!
   id: String!
   userName: String!
+}
+
+input UserWhereUniqueInput {
+  email: String
+  id: String
+  userName: String
 }

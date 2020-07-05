@@ -3,7 +3,7 @@
 ## How to run the backend (GraphQL Server)
 
 ```bash
->_ cd graphql
+>_ cd backend
 >_ yarn
 ```
 
