@@ -51,6 +51,7 @@ scalar Json
 
 type Mutation {
   addArgument(battleId: ID!, text: String!): Argument
+  addComment(argumentId: ID!, text: String!): Comment
   login(email: String!, password: String!): AuthPayload
   signup(email: String!, fullName: String!, password: String!, userName: String!): AuthPayload
 }

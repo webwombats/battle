@@ -2,7 +2,7 @@ import { schema } from 'nexus';
 import { hash } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 
-export const APP_SECRET = 'appsecret321';
+import { APP_SECRET } from '../../config';
 
 schema.extendType({
   type: 'Mutation',

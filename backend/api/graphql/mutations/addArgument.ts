@@ -1,4 +1,5 @@
 import { schema } from 'nexus';
+import { errorMessages } from '../messages';
 
 schema.extendType({
   type: 'Mutation',
@@ -22,11 +23,11 @@ schema.extendType({
         });
 
         if (isArgumentAlreadyExists) {
-          throw new Error(`You already have you argument in that battle`);
+          throw new Error(errorMessages.argumentAlreadyExists);
         }
 
         if (isArgumentCreatedBySameUser) {
-          throw new Error(`You cannot leave an argument to your battle`);
+          throw new Error(errorMessages.argumentCreatedBySameUser);
         }
 
         const createdArgument = await ctx.db.argument.create({
