@@ -5,6 +5,7 @@ schema.objectType({
   definition(t) {
     t.model.id();
     t.model.description();
+    t.model.arguments({ type: 'Argument', pagination: true });
     t.model.userId();
   },
 });

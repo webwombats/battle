@@ -16,12 +16,39 @@ async function main() {
 
   const users: UserCreateInput[] = [
     {
+      id: 'ckc918o7m000201mqh0ambcxl',
+      userName: 'dmitriy',
+      email: 'me@dmitryakovlev.com',
+      password: 'test123',
+      fullName: 'Dmitriy Yakovlev',
+      role: 'ADMIN',
+    },
+    {
+      id: 'ckc9180xz000101mqe1w00qtm',
       userName: 'yuri',
       email: 'hi@mynameisyuri.com',
       password: 'test123',
       fullName: 'Yuri Yakovlev',
+      role: 'ADMIN',
       battles: {
-        create: Array(10).fill(battle),
+        create: {
+          id: 'ckc9314zo000001mq11v6fwug',
+          sideA: 'This is side A text',
+          sideB: 'This is side B text',
+          description:
+            '<p>Nunc vitae odio sit amet ex consectetur luctus. Vivamus efficitur.</p><p>Leo nec pulvinar. Sed commodo enim non justo venenatis, eu eleifend.</p>',
+          arguments: {
+            create: {
+              text: 'Some argument',
+              side: 'SIDE_B',
+              User: {
+                connect: {
+                  id: 'ckc918o7m000201mqh0ambcxl',
+                },
+              },
+            },
+          },
+        },
       },
     },
   ];

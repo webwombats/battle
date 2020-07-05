@@ -1,15 +1,8 @@
 import { schema } from 'nexus';
 
-schema.queryType({
+schema.extendType({
+  type: 'Query',
   definition(t) {
-    t.crud.battles({
-      pagination: true,
-    });
-
-    t.crud.users({
-      pagination: true,
-    });
-
     t.field('battle', {
       type: 'Battle',
       args: {

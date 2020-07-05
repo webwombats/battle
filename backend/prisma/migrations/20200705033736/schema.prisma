@@ -4,7 +4,7 @@ generator prisma_client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 model Battle {
@@ -19,16 +19,15 @@ model Battle {
 }
 
 model User {
-  id        String     @id @default(cuid())
-  userName  String     @unique
-  email     String     @unique
-  password  String
-  fullName  String
-  battles   Battle[]
-  arguments Argument[]
-  comments  Comment[]
-
-  role UserRole @default(USER)
+  id       String     @id @default(cuid())
+  userName String     @unique
+  email    String     @unique
+  password String
+  fullName String
+  battles  Battle[]
+  comments Comment[]
+  role     UserRole   @default(USER)
+  Argument Argument[]
 }
 
 model Argument {
@@ -59,6 +58,6 @@ enum UserRole {
 }
 
 enum Side {
-  SIDE_A
-  SIDE_B
+  SIDE_A  @map("sideA")
+  SIDE_B  @map("sideB")
 }

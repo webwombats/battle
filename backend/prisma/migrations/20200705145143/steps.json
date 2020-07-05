@@ -1,0 +1,34 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateEnum",
+      "enum": "Side",
+      "values": [
+        "SIDE_A",
+        "SIDE_B"
+      ]
+    },
+    {
+      "tag": "CreateField",
+      "model": "Battle",
+      "field": "sideA",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Battle",
+      "field": "sideB",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Argument",
+      "field": "side",
+      "type": "Side",
+      "arity": "Required"
+    }
+  ]
+}

@@ -4,14 +4,14 @@ generator prisma_client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 model Battle {
   id          String     @id @default(cuid())
   description String
-  sideA       String
-  sideB       String
+  // sideA       String
+  // sideB       String
   arguments   Argument[]
 
   User   User   @relation(fields: [userId], references: [id])
@@ -34,7 +34,7 @@ model User {
 model Argument {
   id       String    @id @default(uuid())
   text     String
-  side     Side
+  // side     Side
   comments Comment[]
 
   User     User   @relation(fields: [userId], references: [id])
@@ -58,7 +58,7 @@ enum UserRole {
   ADMIN
 }
 
-enum Side {
-  SIDE_A
-  SIDE_B
-}
+// enum Side {
+//   SIDE_A  @map("sideA")
+//   SIDE_B  @map("sideB")
+// }
