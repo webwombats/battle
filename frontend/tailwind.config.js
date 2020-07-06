@@ -9,7 +9,7 @@ module.exports = {
         charade: "#282c35",
       },
       borderRadius: {
-        xl: "1em",
+        xl: "1rem",
       },
       gridTemplateColumns: {
         "battle-title": "minmax(auto,1fr) 50px minmax(auto,1fr)",

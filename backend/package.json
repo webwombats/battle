@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
     "jsonwebtoken": "^8.5.1",
     "nexus": "0.25.0",
     "nexus-plugin-jwt-auth": "^1.2.0",
@@ -26,6 +27,7 @@
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
+    "@types/cors": "^2.8.6",
     "@types/jsonwebtoken": "^8.5.0",
     "prettier": "^2.0.5",
     "ts-node": "^8.10.2"

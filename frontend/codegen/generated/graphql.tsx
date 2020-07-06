@@ -18,9 +18,10 @@ export type Scalars = {
 
 export type Query = {
   __typename?: 'Query';
-  battles?: Maybe<Array<Battle>>;
   battle?: Maybe<Battle>;
-  users?: Maybe<Array<User>>;
+  battles: Array<Battle>;
+  users: Array<User>;
+  me?: Maybe<User>;
 };
 
 
@@ -28,11 +29,75 @@ export type QueryBattleArgs = {
   id: Scalars['ID'];
 };
 
+
+export type QueryBattlesArgs = {
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  before?: Maybe<BattleWhereUniqueInput>;
+  after?: Maybe<BattleWhereUniqueInput>;
+};
+
+
+export type QueryUsersArgs = {
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  before?: Maybe<UserWhereUniqueInput>;
+  after?: Maybe<UserWhereUniqueInput>;
+};
+
 export type Battle = {
   __typename?: 'Battle';
   id: Scalars['String'];
   description: Scalars['String'];
-  userId?: Maybe<Scalars['String']>;
+  arguments: Array<Argument>;
+  userId: Scalars['String'];
+};
+
+
+export type BattleArgumentsArgs = {
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  before?: Maybe<ArgumentWhereUniqueInput>;
+  after?: Maybe<ArgumentWhereUniqueInput>;
+};
+
+export type ArgumentWhereUniqueInput = {
+  id?: Maybe<Scalars['String']>;
+};
+
+export type Argument = {
+  __typename?: 'Argument';
+  id: Scalars['String'];
+  text: Scalars['String'];
+  comments: Array<Comment>;
+};
+
+
+export type ArgumentCommentsArgs = {
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  before?: Maybe<CommentWhereUniqueInput>;
+  after?: Maybe<CommentWhereUniqueInput>;
+};
+
+export type CommentWhereUniqueInput = {
+  id?: Maybe<Scalars['String']>;
+};
+
+export type Comment = {
+  __typename?: 'Comment';
+  id: Scalars['String'];
+  text: Scalars['String'];
+};
+
+export type BattleWhereUniqueInput = {
+  id?: Maybe<Scalars['String']>;
+};
+
+export type UserWhereUniqueInput = {
+  id?: Maybe<Scalars['String']>;
+  userName?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
 };
 
 export type User = {
@@ -44,22 +109,44 @@ export type User = {
   battles: Array<Battle>;
 };
 
+
+export type UserBattlesArgs = {
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  before?: Maybe<BattleWhereUniqueInput>;
+  after?: Maybe<BattleWhereUniqueInput>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
-  signup?: Maybe<AuthPayload>;
+  addArgument?: Maybe<Argument>;
+  addComment?: Maybe<Comment>;
   login?: Maybe<AuthPayload>;
+  signup?: Maybe<AuthPayload>;
+};
+
+
+export type MutationAddArgumentArgs = {
+  battleId: Scalars['ID'];
+  text: Scalars['String'];
+};
+
+
+export type MutationAddCommentArgs = {
+  argumentId: Scalars['ID'];
+  text: Scalars['String'];
+};
+
+
+export type MutationLoginArgs = {
+  email: Scalars['String'];
+  password: Scalars['String'];
 };
 
 
 export type MutationSignupArgs = {
   fullName: Scalars['String'];
   userName: Scalars['String'];
-  email: Scalars['String'];
-  password: Scalars['String'];
-};
-
-
-export type MutationLoginArgs = {
   email: Scalars['String'];
   password: Scalars['String'];
 };
@@ -104,10 +191,10 @@ export type BattlesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type BattlesQuery = (
   { __typename?: 'Query' }
-  & { battles?: Maybe<Array<(
+  & { battles: Array<(
     { __typename?: 'Battle' }
     & Pick<Battle, 'id' | 'description' | 'userId'>
-  )>> }
+  )> }
 );
 
 export type BattleQueryVariables = Exact<{
