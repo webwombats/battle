@@ -2,7 +2,7 @@ import { schema } from 'nexus';
 import { hash } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 
-import { APP_SECRET } from '../../../config';
+import { TOKEN_SECRET } from '../../../config';
 
 schema.extendType({
   type: 'Mutation',
@@ -31,7 +31,7 @@ schema.extendType({
         });
 
         return {
-          token: sign({ userId: user.id }, APP_SECRET),
+          token: sign({ userId: user.id }, TOKEN_SECRET),
           user,
         };
       },

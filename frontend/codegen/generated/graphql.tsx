@@ -159,13 +159,24 @@ export type AuthPayload = {
 
 
 
-export type UserFragment = (
+export type UserFieldsFragment = (
   { __typename?: 'User' }
   & Pick<User, 'id' | 'userName' | 'email' | 'fullName'>
-  & { battles: Array<(
-    { __typename?: 'Battle' }
-    & Pick<Battle, 'id' | 'description' | 'userId'>
-  )> }
+);
+
+export type BattleFieldsFragment = (
+  { __typename?: 'Battle' }
+  & Pick<Battle, 'id' | 'description' | 'userId'>
+);
+
+export type ArgumentFieldsFragment = (
+  { __typename?: 'Argument' }
+  & Pick<Argument, 'id' | 'text'>
+);
+
+export type CommentFieldsFragment = (
+  { __typename?: 'Comment' }
+  & Pick<Comment, 'id' | 'text'>
 );
 
 export type LoginMutationVariables = Exact<{
@@ -181,8 +192,19 @@ export type LoginMutation = (
     & Pick<AuthPayload, 'token'>
     & { user?: Maybe<(
       { __typename?: 'User' }
-      & UserFragment
+      & UserFieldsFragment
     )> }
+  )> }
+);
+
+export type MeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MeQuery = (
+  { __typename?: 'Query' }
+  & { me?: Maybe<(
+    { __typename?: 'User' }
+    & UserFieldsFragment
   )> }
 );
 
@@ -193,7 +215,7 @@ export type BattlesQuery = (
   { __typename?: 'Query' }
   & { battles: Array<(
     { __typename?: 'Battle' }
-    & Pick<Battle, 'id' | 'description' | 'userId'>
+    & BattleFieldsFragment
   )> }
 );
 
@@ -206,21 +228,35 @@ export type BattleQuery = (
   { __typename?: 'Query' }
   & { battle?: Maybe<(
     { __typename?: 'Battle' }
-    & Pick<Battle, 'id' | 'description' | 'userId'>
+    & BattleFieldsFragment
   )> }
 );
 
-export const UserFragmentDoc = gql`
-    fragment User on User {
+export const UserFieldsFragmentDoc = gql`
+    fragment UserFields on User {
   id
   userName
   email
   fullName
-  battles {
-    id
-    description
-    userId
-  }
+}
+    `;
+export const BattleFieldsFragmentDoc = gql`
+    fragment BattleFields on Battle {
+  id
+  description
+  userId
+}
+    `;
+export const ArgumentFieldsFragmentDoc = gql`
+    fragment ArgumentFields on Argument {
+  id
+  text
+}
+    `;
+export const CommentFieldsFragmentDoc = gql`
+    fragment CommentFields on Comment {
+  id
+  text
 }
     `;
 export const LoginDocument = gql`
@@ -228,11 +264,11 @@ export const LoginDocument = gql`
   login(email: $email, password: $password) {
     token
     user {
-      ...User
+      ...UserFields
     }
   }
 }
-    ${UserFragmentDoc}`;
+    ${UserFieldsFragmentDoc}`;
 export type LoginMutationFn = ApolloReactCommon.MutationFunction<LoginMutation, LoginMutationVariables>;
 
 /**
@@ -259,15 +295,45 @@ export function useLoginMutation(baseOptions?: ApolloReactHooks.MutationHookOpti
 export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
 export type LoginMutationResult = ApolloReactCommon.MutationResult<LoginMutation>;
 export type LoginMutationOptions = ApolloReactCommon.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
+export const MeDocument = gql`
+    query me {
+  me {
+    ...UserFields
+  }
+}
+    ${UserFieldsFragmentDoc}`;
+
+/**
+ * __useMeQuery__
+ *
+ * To run a query within a React component, call `useMeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMeQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMeQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<MeQuery, MeQueryVariables>) {
+        return ApolloReactHooks.useQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions);
+      }
+export function useMeLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<MeQuery, MeQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions);
+        }
+export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
+export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
+export type MeQueryResult = ApolloReactCommon.QueryResult<MeQuery, MeQueryVariables>;
 export const BattlesDocument = gql`
     query battles {
   battles {
-    id
-    description
-    userId
+    ...BattleFields
   }
 }
-    `;
+    ${BattleFieldsFragmentDoc}`;
 
 /**
  * __useBattlesQuery__
@@ -296,12 +362,10 @@ export type BattlesQueryResult = ApolloReactCommon.QueryResult<BattlesQuery, Bat
 export const BattleDocument = gql`
     query battle($id: ID!) {
   battle(id: $id) {
-    id
-    description
-    userId
+    ...BattleFields
   }
 }
-    `;
+    ${BattleFieldsFragmentDoc}`;
 
 /**
  * __useBattleQuery__

@@ -2,7 +2,7 @@ import { schema } from 'nexus';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 
-import { APP_SECRET } from '../../../config';
+import { TOKEN_SECRET } from '../../../config';
 
 schema.extendType({
   type: 'Mutation',
@@ -14,6 +14,7 @@ schema.extendType({
         password: schema.stringArg({ nullable: false }),
       },
       resolve: async (_parent, { email, password }, ctx) => {
+        console.log({ ctx });
         const user = await ctx.db.user.findOne({
           where: {
             email,
@@ -29,8 +30,10 @@ schema.extendType({
           throw new Error('Invalid password');
         }
 
+        // await setLoginSession(context.res, session);
+
         return {
-          token: sign({ userId: user.id }, APP_SECRET),
+          token: sign({ userId: user.id }, TOKEN_SECRET),
           user,
         };
       },

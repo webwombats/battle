@@ -5,7 +5,7 @@ import { shield } from 'nexus-plugin-shield';
 import * as cors from 'cors';
 
 import { rules } from './permissions';
-import { APP_SECRET } from './config';
+import { TOKEN_SECRET } from './config';
 
 server.express.use(cors());
 
@@ -13,7 +13,7 @@ use(prisma({ features: { crud: true } }));
 
 use(
   auth({
-    appSecret: APP_SECRET,
+    appSecret: TOKEN_SECRET,
   }),
 );
 

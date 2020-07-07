@@ -1,20 +1,8 @@
-fragment User on User {
-  id
-  userName
-  email
-  fullName
-  battles {
-    id
-    description
-    userId
-  }
-}
-
 mutation login($email: String!, $password: String!) {
   login(email: $email, password: $password) {
     token
     user {
-      ...User
+      ...UserFields
     }
   }
 }
