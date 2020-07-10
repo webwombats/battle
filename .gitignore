@@ -31,3 +31,8 @@ yarn-error.log*
 
 # Prisma
 failed-inferMigrationSteps*
+
+#.env
+.env
+.env-*
+!.env-example
