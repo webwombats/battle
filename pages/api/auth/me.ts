@@ -13,7 +13,7 @@ const handleGET = async (userId: string, res: NextApiResponse) => {
     },
   });
 
-  res.json(user);
+  res.json({ user });
 };
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -22,9 +22,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getLoginSession(req, res);
 
   if (!session) {
-    return res.status(401).json({
-      error: "Unauthorized",
-    });
+    return res.json({ user: null });
   }
 
   const userId = session.id;

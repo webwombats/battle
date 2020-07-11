@@ -1,29 +1,92 @@
-import { useEffect, useState } from "react";
 import Link from "next/link";
+import useSWR, { mutate } from "swr";
+
+import { User } from "@prisma/client";
+import fetcher from "@utils/fetcher";
+
+export const useUser = () => {
+  const { data, error } = useSWR<{ user: User }, Error>(
+    `/api/auth/me`,
+    fetcher,
+    {
+      errorRetryInterval: 10000,
+    }
+  );
+
+  console.log({ data });
+
+  return {
+    user: data && data.user,
+    isLoading: !error && !data,
+    isError: error,
+  };
+};
+
+async function handleLogout() {
+  try {
+    await fetch(`/api/auth/logout`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    mutate("/api/auth/me", null);
+  } catch (error) {
+    console.log({ error });
+  }
+}
+
+const Content = () => {
+  const { user, isLoading, isError } = useUser();
+
+  if (isLoading) return <div>Loading</div>;
+
+  if (user) {
+    return (
+      <>
+        <h1>Welcome back, {user.email}</h1>
+
+        <button
+          onClick={handleLogout}
+          className="inline-flex items-center bg-gray-200 border-0 py-1 px-3 focus:outline-none hover:bg-gray-300 rounded text-gray-900 mt-4 md:mt-0"
+        >
+          Logout
+          <svg
+            fill="none"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            className="w-4 h-4 ml-1"
+            viewBox="0 0 24 24"
+          >
+            <path d="M5 12h14M12 5l7 7-7 7"></path>
+          </svg>
+        </button>
+      </>
+    );
+  }
+
+  return (
+    <Link href="/signin">
+      <button className="inline-flex items-center bg-gray-200 border-0 py-1 px-3 focus:outline-none hover:bg-gray-300 rounded text-gray-900 mt-4 md:mt-0">
+        Sign In
+        <svg
+          fill="none"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          className="w-4 h-4 ml-1"
+          viewBox="0 0 24 24"
+        >
+          <path d="M5 12h14M12 5l7 7-7 7"></path>
+        </svg>
+      </button>
+    </Link>
+  );
+};
 
 const Header = () => {
-  const [user, setUser] = useState();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await fetch(`http://localhost:3000/api/auth/me`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await res.json();
-
-      if (data.error) {
-        return;
-      }
-
-      setUser(data);
-    };
-
-    fetchData();
-  }, []);
-
   return (
     <header className="text-white body-font">
       <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
@@ -52,27 +115,7 @@ const Header = () => {
           <a className="mr-5 hover:text-gray-400">Fourth Link</a>
         </nav>
 
-        {
-          // @ts-ignore
-          (user && !user.error && <p>You're signed in as {user.email}</p>) || (
-            <Link href="/signin">
-              <button className="inline-flex items-center bg-gray-200 border-0 py-1 px-3 focus:outline-none hover:bg-gray-300 rounded text-gray-900 mt-4 md:mt-0">
-                Sign In
-                <svg
-                  fill="none"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  className="w-4 h-4 ml-1"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M5 12h14M12 5l7 7-7 7"></path>
-                </svg>
-              </button>
-            </Link>
-          )
-        }
+        <Content></Content>
       </div>
     </header>
   );

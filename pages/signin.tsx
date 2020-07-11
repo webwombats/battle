@@ -1,6 +1,7 @@
-import { useState } from "react";
-import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
+import Router, { useRouter } from "next/router";
 import Link from "next/link";
+import { useUser } from "@components/Layout/Header/Header";
 
 const Field = ({
   name,
@@ -56,7 +57,14 @@ function getErrorMessage(error) {
 
 const SignIn = () => {
   const [errorMsg, setErrorMsg] = useState();
+  const { user } = useUser();
   const router = useRouter();
+
+  useEffect(() => {
+    if (user) {
+      Router.replace("/");
+    }
+  }, [user]);
 
   // async function handleSubmit(e: React.SyntheticEvent) {
   async function handleSubmit(e) {
@@ -67,7 +75,7 @@ const SignIn = () => {
 
     try {
       const body = { email, password };
-      const res = await fetch(`http://localhost:3000/api/auth/login`, {
+      const res = await fetch(`/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),

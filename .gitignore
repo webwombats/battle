@@ -28,11 +28,12 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
+.env
+.env-*
+!.env-example
 
 # Prisma
 failed-inferMigrationSteps*
 
-#.env
-.env
-.env-*
-!.env-example
+# vercel
+.vercel
