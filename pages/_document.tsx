@@ -11,7 +11,7 @@ export default class MyDocument extends Document {
           /> */}
         </Head>
 
-        <body className="px-0 sm:px-16 md:px-16 lg:px-16 bg-charade">
+        <body className="px-2 sm:px-4 md:px-8 lg:px-16 bg-charade">
           <Main />
           <NextScript />
         </body>
