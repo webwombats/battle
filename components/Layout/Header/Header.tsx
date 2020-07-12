@@ -7,13 +7,8 @@ import fetcher from "@utils/fetcher";
 export const useUser = () => {
   const { data, error } = useSWR<{ user: User }, Error>(
     `/api/auth/me`,
-    fetcher,
-    {
-      errorRetryInterval: 10000,
-    }
+    fetcher
   );
-
-  console.log({ data });
 
   return {
     user: data && data.user,
