@@ -30,6 +30,53 @@ async function handleLogout() {
   }
 }
 
+const CreateBattleButton = () => (
+  <Link href="/battle/create">
+    <button className="inline-flex items-center bg-green-700 hover:bg-green-600 border-0 py-1 px-3 focus:outline-none rounded text-white mt-4 md:mt-0">
+      Create Battle
+    </button>
+  </Link>
+);
+
+const SignInButton = () => (
+  <Link href="/signin">
+    <button className="inline-flex items-center bg-blue-700 hover:bg-blue-600 border-0 py-1 px-3 focus:outline-none rounded text-white mt-4 md:mt-0">
+      Sign In
+      <svg
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        className="w-4 h-4 ml-1"
+        viewBox="0 0 24 24"
+      >
+        <path d="M5 12h14M12 5l7 7-7 7"></path>
+      </svg>
+    </button>
+  </Link>
+);
+
+const LogOutButton = ({ onClick }: { onClick: () => void }) => (
+  <button
+    onClick={onClick}
+    className="inline-flex items-center bg-blue-700 hover:bg-blue-600 border-0 py-1 px-3 focus:outline-none rounded text-white mt-4 md:mt-0"
+  >
+    Logout
+    <svg
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      className="w-4 h-4 ml-1"
+      viewBox="0 0 24 24"
+    >
+      <path d="M5 12h14M12 5l7 7-7 7"></path>
+    </svg>
+  </button>
+);
+
 const Content = () => {
   const { user, isLoading, isError } = useUser();
 
@@ -37,47 +84,20 @@ const Content = () => {
 
   if (user) {
     return (
-      <>
-        <h1>Welcome back, {user.email}</h1>
+      <div className="flex space-x-4">
+        <h3 className="self-center">Welcome back, {user.email}</h3>
+        <CreateBattleButton />
 
-        <button
-          onClick={handleLogout}
-          className="inline-flex items-center bg-gray-200 border-0 py-1 px-3 focus:outline-none hover:bg-gray-300 rounded text-gray-900 mt-4 md:mt-0"
-        >
-          Logout
-          <svg
-            fill="none"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            className="w-4 h-4 ml-1"
-            viewBox="0 0 24 24"
-          >
-            <path d="M5 12h14M12 5l7 7-7 7"></path>
-          </svg>
-        </button>
-      </>
+        <LogOutButton onClick={handleLogout} />
+      </div>
     );
   }
 
   return (
-    <Link href="/signin">
-      <button className="inline-flex items-center bg-gray-200 border-0 py-1 px-3 focus:outline-none hover:bg-gray-300 rounded text-gray-900 mt-4 md:mt-0">
-        Sign In
-        <svg
-          fill="none"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          className="w-4 h-4 ml-1"
-          viewBox="0 0 24 24"
-        >
-          <path d="M5 12h14M12 5l7 7-7 7"></path>
-        </svg>
-      </button>
-    </Link>
+    <div className="flex space-x-4">
+      <CreateBattleButton />
+      <SignInButton />
+    </div>
   );
 };
 

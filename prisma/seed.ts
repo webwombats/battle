@@ -64,7 +64,7 @@ async function main() {
       role: "ADMIN",
     }));
 
-  const generatedUsers = await generateUsers(500);
+  const generatedUsers = await generateUsers(50);
 
   let userResults = [];
 

@@ -2,7 +2,6 @@ import { FC } from "react";
 import { PrismaClient, Battle, Argument, Comment } from "@prisma/client";
 
 import Header from "@components/Layout/Header";
-import ErrorMessage from "@components/ErrorMessage";
 
 type Props = {
   battle: Battle & {
@@ -12,21 +11,21 @@ type Props = {
   };
 };
 
-const BattleTitle = () => (
+const BattleTitle = ({ sideA, sideB }: Partial<Battle>) => (
   <div className="container mx-auto grid grid-cols-battle-title my-12 border-gray-900 font-sans">
     <div className="py-12 px-8 bg-havelock-blue self-center rounded-tl-xl rounded-bl-xl">
       <div className="w-full text-center text-xl sm:text-2xl md:text-3xl lg:text-4xl font-medium text-white">
-        Фуллстак
+        {sideA}
       </div>
     </div>
     <div className="or py-12">
       <div className="w-full text-center text-base sm:text-lg md:text-xl lg:text-2xl font-normal text-white text-opacity-75">
-        или
+        or
       </div>
     </div>
     <div className="py-12 px-8 bg-fruit-salad self-center rounded-tr-xl rounded-br-xl">
       <div className="w-full text-center text-xl sm:text-2xl md:text-3xl lg:text-4xl font-medium text-white">
-        Специализация
+        {sideB}
       </div>
     </div>
   </div>
@@ -38,12 +37,12 @@ const BattleDescription: FC = ({ children }) => (
   </div>
 );
 
-const IndexPage = ({ battle }: Props) => {
+const BattleIDPage = ({ battle }: Props) => {
   return (
     <div>
       <Header />
 
-      <BattleTitle />
+      <BattleTitle {...battle} />
       <BattleDescription>
         <div dangerouslySetInnerHTML={{ __html: battle.description }} />
       </BattleDescription>
@@ -100,4 +99,6 @@ export async function getStaticProps({ params }) {
   };
 }
 
-export default IndexPage;
+export default BattleIDPage;
+
+// TODO: Чужие аргументы меня переубедили
