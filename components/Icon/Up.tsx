@@ -1,4 +1,6 @@
-const UpIcon = (props) => {
+import { SVGProps } from "react";
+
+const UpIcon = (props: SVGProps<SVGSVGElement>) => {
   return (
     <svg
       aria-hidden="true"

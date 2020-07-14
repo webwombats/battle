@@ -1,8 +1,16 @@
 import { FC } from "react";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Battle, Argument, Comment } from "@prisma/client";
 
 import Header from "@components/Layout/Header";
 import ErrorMessage from "@components/ErrorMessage";
+
+type Props = {
+  battle: Battle & {
+    arguments: (Argument & {
+      comments: Comment[];
+    })[];
+  };
+};
 
 const BattleTitle = () => (
   <div className="container mx-auto grid grid-cols-battle-title my-12 border-gray-900 font-sans">
@@ -30,7 +38,7 @@ const BattleDescription: FC = ({ children }) => (
   </div>
 );
 
-const IndexPage = ({ id, battle }) => {
+const IndexPage = ({ battle }: Props) => {
   return (
     <div>
       <Header />
@@ -39,6 +47,20 @@ const IndexPage = ({ id, battle }) => {
       <BattleDescription>
         <div dangerouslySetInnerHTML={{ __html: battle.description }} />
       </BattleDescription>
+
+      <div>
+        {battle.arguments.map((argument) => (
+          <>
+            <div>{argument.text}</div>
+            <div>{argument.side}</div>
+            <div>
+              {argument.comments.map((comment) => (
+                <div>{comment.text}</div>
+              ))}
+            </div>
+          </>
+        ))}
+      </div>
     </div>
   );
 };

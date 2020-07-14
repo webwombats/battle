@@ -34,17 +34,17 @@ p:first-child {
   line-height: 1.15;
 }
 
+.bl-container:hover {
+  box-shadow: 0 0 40px rgba(94, 104, 125, 0.3);
+}
+
+.upvote:hover,
+.upvote:hover > svg {
+  @apply text-charade bg-gray-400;
+}
+
 @tailwind utilities;
 
 /* :root {
   --sans-font: "Ubuntu", Helvetica, Verdana, sans-serif;
   --serif-font: "Merriweather", Georgia, Times, serif; */
-
-.bl-container:hover {
-  box-shadow: 0 0 40px rgba(94, 104, 125, 0.3);
-}
-
-.bl-votes:hover,
-.bl-votes:hover > svg {
-  @apply text-charade bg-gray-400;
-}
