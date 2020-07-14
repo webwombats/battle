@@ -48,9 +48,13 @@ const IndexPage = ({ battle }: Props) => {
         <div dangerouslySetInnerHTML={{ __html: battle.description }} />
       </BattleDescription>
 
-      <div>
+      <div className="container mx-auto my-12 border-gray-900 font-sans">
         {battle.arguments.map((argument) => (
-          <>
+          <div
+            className={`my-8 py-12 px-8 ${
+              argument.side === "SIDE_A" ? "bg-havelock-blue" : "bg-fruit-salad"
+            } self-center rounded-xl`}
+          >
             <div>{argument.text}</div>
             <div>{argument.side}</div>
             <div>
@@ -58,7 +62,7 @@ const IndexPage = ({ battle }: Props) => {
                 <div>{comment.text}</div>
               ))}
             </div>
-          </>
+          </div>
         ))}
       </div>
     </div>
