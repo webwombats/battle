@@ -3,11 +3,17 @@ import { NextPage } from "next";
 import Header from "@components/Layout/Header";
 import BattleList from "@components/BattleList";
 
-import { PrismaClient, Battle, Argument, Comment, User } from "@prisma/client";
+import {
+  PrismaClient,
+  Battle,
+  Comment,
+  User,
+  Standpoint,
+} from "@prisma/client";
 
 export type IndexPageBattle = Battle & {
-  arguments: Array<
-    Argument & {
+  standpoints: Array<
+    Standpoint & {
       comments: Comment[];
     }
   >;
@@ -32,7 +38,7 @@ export async function getStaticProps() {
   const prisma = new PrismaClient();
 
   const battles = await prisma.battle.findMany({
-    include: { arguments: { include: { comments: true } }, User: true },
+    include: { standpoints: { include: { comments: true } }, User: true },
   });
 
   return {

@@ -1,14 +1,15 @@
-import { FC } from "react";
-import { PrismaClient, Battle, Argument, Comment } from "@prisma/client";
+import { PrismaClient, Battle, Standpoint, Comment } from "@prisma/client";
 
 import Header from "@components/Layout/Header";
 
+export type BattleIDPage = Battle & {
+  standpoints: (Standpoint & {
+    comments: Comment[];
+  })[];
+};
+
 type Props = {
-  battle: Battle & {
-    arguments: (Argument & {
-      comments: Comment[];
-    })[];
-  };
+  battle: BattleIDPage;
 };
 
 const BattleTitle = ({ sideA, sideB }: Partial<Battle>) => (
@@ -31,9 +32,30 @@ const BattleTitle = ({ sideA, sideB }: Partial<Battle>) => (
   </div>
 );
 
-const BattleDescription: FC = ({ children }) => (
+const BattleDescription = ({ description }: Partial<BattleIDPage>) => (
   <div className="max-w-4xl mx-auto bg-shark p-8 text-white text-base sm:text-lg md:text-xl lg:text-2xl rounded-xl font-serif">
-    {children}
+    <div dangerouslySetInnerHTML={{ __html: description }} />
+  </div>
+);
+
+const StandpointList = ({ standpoints }: Partial<BattleIDPage>) => (
+  <div className="container mx-auto my-12 border-gray-900 font-sans">
+    {standpoints &&
+      standpoints.map((standpoint) => (
+        <div
+          className={`my-8 py-12 px-8 ${
+            standpoint.side === "SIDE_A" ? "bg-havelock-blue" : "bg-fruit-salad"
+          } self-center rounded-xl`}
+        >
+          <div>{standpoint.text}</div>
+          <div>{standpoint.side}</div>
+          <div>
+            {standpoint.comments.map((comment) => (
+              <div>{comment.text}</div>
+            ))}
+          </div>
+        </div>
+      ))}
   </div>
 );
 
@@ -43,27 +65,8 @@ const BattleIDPage = ({ battle }: Props) => {
       <Header />
 
       <BattleTitle {...battle} />
-      <BattleDescription>
-        <div dangerouslySetInnerHTML={{ __html: battle.description }} />
-      </BattleDescription>
-
-      <div className="container mx-auto my-12 border-gray-900 font-sans">
-        {battle.arguments.map((argument) => (
-          <div
-            className={`my-8 py-12 px-8 ${
-              argument.side === "SIDE_A" ? "bg-havelock-blue" : "bg-fruit-salad"
-            } self-center rounded-xl`}
-          >
-            <div>{argument.text}</div>
-            <div>{argument.side}</div>
-            <div>
-              {argument.comments.map((comment) => (
-                <div>{comment.text}</div>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
+      <BattleDescription {...battle} />
+      <StandpointList {...battle} />
     </div>
   );
 };
@@ -72,7 +75,7 @@ export async function getStaticPaths() {
   const prisma = new PrismaClient();
 
   const battles = await prisma.battle.findMany({
-    include: { arguments: { include: { comments: true } } },
+    include: { standpoints: { include: { comments: true } } },
   });
   const paths = battles.map((battle) => ({
     params: { id: battle.id },
@@ -87,7 +90,7 @@ export async function getStaticProps({ params }) {
 
   const battle = await prisma.battle.findOne({
     where: { id: params.id },
-    include: { arguments: { include: { comments: true } } },
+    include: { standpoints: { include: { comments: true } } },
   });
 
   return {

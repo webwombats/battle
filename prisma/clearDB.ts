@@ -27,7 +27,7 @@ const deleteEverything = async (name: string) => {
 
 async function main() {
   await deleteEverything("comment");
-  await deleteEverything("argument");
+  await deleteEverything("standpoint");
   await deleteEverything("battle");
   await deleteEverything("user");
 

@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 // GET /api/battles
 const handleGET = async (res: NextApiResponse) => {
   const battles = await prisma.battle.findMany({
-    include: { arguments: { include: { comments: true } } },
+    include: { standpoints: { include: { comments: true } } },
   });
 
   res.json(battles);

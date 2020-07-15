@@ -1,4 +1,4 @@
-// import { PrismaClient, Battle, Argument, Comment } from "@prisma/client";
+// import { PrismaClient, Battle, Comment } from "@prisma/client";
 
 import Header from "@components/Layout/Header";
 

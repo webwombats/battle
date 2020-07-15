@@ -34,9 +34,9 @@ const mainUsers: UserCreateInput[] = [
         sideB: "This is side B text",
         description:
           "<p>Nunc vitae odio sit amet ex consectetur luctus. Vivamus efficitur.</p><p>Leo nec pulvinar. Sed commodo enim non justo venenatis, eu eleifend.</p>",
-        arguments: {
+        standpoints: {
           create: {
-            text: "Some argument",
+            text: "Some standpoint",
             side: "SIDE_B",
             User: {
               connect: {
@@ -89,7 +89,7 @@ async function main() {
 
     var randomSide = Math.round(Math.random());
 
-    const createdArgument = await db.argument.create({
+    const createdStandpoint = await db.standpoint.create({
       data: {
         text: faker.lorem.paragraph(),
         side: randomSide === 0 ? "SIDE_A" : "SIDE_B",
@@ -106,7 +106,7 @@ async function main() {
       },
     });
 
-    userResults.push({ ...createdUser, argument: createdArgument });
+    userResults.push({ ...createdUser, standpoint: createdStandpoint });
   }
 
   console.log("Seeded: %j", userResults);

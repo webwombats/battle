@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 const handleGET = async (battleId: string, res: NextApiResponse) => {
   const battle = await prisma.battle.findOne({
     where: { id: battleId },
-    include: { arguments: { include: { comments: true } } },
+    include: { standpoints: { include: { comments: true } } },
   });
 
   res.json(battle);

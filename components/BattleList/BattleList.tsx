@@ -69,10 +69,9 @@ export const BattleCard = (battle: IndexPageBattle) => {
 const BattleList = ({ data }: { data: IndexPageBattle[] }) => {
   return (
     <section>
-      {data.map((battle) => {
-        console.log({ battle: battle.User });
-        return <BattleCard {...battle} key={battle.id} />;
-      })}
+      {data.map((battle) => (
+        <BattleCard {...battle} key={battle.id} />
+      ))}
     </section>
   );
 };
