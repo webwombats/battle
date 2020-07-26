@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { PrismaClient, Battle, Standpoint, Comment } from "@prisma/client";
 
 import Header from "@components/Layout/Header";
@@ -46,6 +47,7 @@ const StandpointList = ({ standpoints }: Partial<BattleIDPage>) => (
           className={`my-8 py-12 px-8 ${
             standpoint.side === "SIDE_A" ? "bg-havelock-blue" : "bg-fruit-salad"
           } self-center rounded-xl`}
+          key={standpoint.id}
         >
           <div>{standpoint.text}</div>
           <div>{standpoint.side}</div>
@@ -60,13 +62,25 @@ const StandpointList = ({ standpoints }: Partial<BattleIDPage>) => (
 );
 
 const BattleIDPage = ({ battle }: Props) => {
+  const router = useRouter();
+
   return (
     <div>
       <Header />
 
-      <BattleTitle {...battle} />
-      <BattleDescription {...battle} />
-      <StandpointList {...battle} />
+      {router.isFallback && <div className="text-white">Loading...</div>}
+
+      {battle ? (
+        <>
+          <BattleTitle {...battle} />
+          <BattleDescription {...battle} />
+          <StandpointList {...battle} />
+        </>
+      ) : (
+        <div>
+          <p>404. Not found.</p>
+        </div>
+      )}
     </div>
   );
 };
@@ -98,7 +112,7 @@ export async function getStaticProps({ params }) {
       id: params.id,
       battle,
     },
-    unstable_revalidate: 1,
+    revalidate: 1,
   };
 }
 

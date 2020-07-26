@@ -45,7 +45,7 @@ export async function getStaticProps() {
     props: {
       battles,
     },
-    unstable_revalidate: 1,
+    revalidate: 1,
   };
 }
 

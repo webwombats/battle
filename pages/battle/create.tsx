@@ -38,7 +38,7 @@ const BattleCreatePage = () => {
 //       id: params.id,
 //       battle,
 //     },
-//     unstable_revalidate: 1,
+//     revalidate: 1,
 //   };
 // }
 
