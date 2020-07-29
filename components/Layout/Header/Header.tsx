@@ -1,8 +1,10 @@
+import { FC } from "react";
 import Link from "next/link";
 import useSWR, { mutate } from "swr";
 
 import { User } from "@prisma/client";
 import fetcher from "@utils/fetcher";
+import HeaderLoader from "@components/Loader";
 
 export const useUser = () => {
   const { data, error } = useSWR<{ user: User }, Error>(
@@ -80,23 +82,25 @@ const LogOutButton = ({ onClick }: { onClick: () => void }) => (
 const Content = () => {
   const { user, isLoading, isError } = useUser();
 
-  if (isLoading) return <div>Loading</div>;
-
-  if (user) {
-    return (
-      <div className="flex space-x-4">
-        <h3 className="self-center">Welcome back, {user.email}</h3>
-        <CreateBattleButton />
-
-        <LogOutButton onClick={handleLogout} />
-      </div>
-    );
-  }
-
   return (
     <div className="flex space-x-4">
+      {!isLoading && user && (
+        <h3 className="self-center">Welcome back, {user?.email}</h3>
+      )}
       <CreateBattleButton />
-      <SignInButton />
+
+      {/* {isLoading && (
+        <HeaderLoader
+          backgroundColor="#2b6cb0"
+          foregroundColor="#3182ce"
+          className="inline-flex items-center mt-4 md:mt-0"
+        />
+      )} */}
+      {!isLoading && user ? (
+        <LogOutButton onClick={handleLogout} />
+      ) : (
+        <SignInButton />
+      )}
     </div>
   );
 };
