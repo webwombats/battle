@@ -26,7 +26,7 @@ async function handleLogout() {
       headers: { "Content-Type": "application/json" },
     });
 
-    mutate("/api/auth/me", null);
+    await mutate("/api/auth/me", null);
   } catch (error) {
     console.log({ error });
   }

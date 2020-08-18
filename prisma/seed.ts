@@ -111,7 +111,7 @@ async function main() {
 
   console.log("Seeded: %j", userResults);
 
-  db.disconnect();
+  db.$disconnect();
 }
 
 main();

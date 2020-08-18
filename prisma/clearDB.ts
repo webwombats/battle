@@ -33,7 +33,7 @@ async function main() {
 
   console.log("Success");
 
-  db.disconnect();
+  db.$disconnect();
 }
 
 main();
